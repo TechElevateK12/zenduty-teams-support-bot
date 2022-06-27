@@ -4,7 +4,7 @@
 const { ActivityHandler, CardFactory } = require('botbuilder');
 const card = require('./deploymentTemplates/InputFormCard.json');
 const apicard = require('./deploymentTemplates/APICard.json');
-var Request = require('request');
+const axios = require('axios');
 
 class EmptyBot extends ActivityHandler {
     constructor(myStorage) {
@@ -14,7 +14,8 @@ class EmptyBot extends ActivityHandler {
             // console.log('No message received');
             if (context.activity.text === 'hard reset') {
                 await myStorage.delete(['apiKey']);
-                await context.sendActivity('API Key deleted');
+                await context.sendActivity(`API Key deleted by - ${context.activity.from.name}`);
+    
             }
             const inputCard = CardFactory.adaptiveCard(card);
             const storageToken = await myStorage.read(['apiKey']);
@@ -31,20 +32,23 @@ class EmptyBot extends ActivityHandler {
             if (envToken) {
                 try {
                     // console.log(envToken);
-                    Request.post({
-                        headers: { 'content-type': 'application/json' },
-                        url: `https://www.zenduty.com/api/events/${envToken}/`,
-                        body: JSON.stringify({ "message":`${context.activity.value.message}`,"alert_type":"critical" }) 
-                    }, (error, res, body) => {
-                        if (error) {
-                            return console.dir(error);
-                        }
+
+                    const response = await axios.post(`https://www.zenduty.com/api/events/${envToken}/`, {
+                        "message":`${context.activity.value.message}`,"alert_type":"critical","summary":`${context.activity.value.summary}`.concat(`  -> ${context.activity.from.name}`)
                     });
-                    if (context.activity.value) {
-                        await context.sendActivity('Sending Alerts');
+
+                    if (response.status === 201 || response.status === 200) {
+                        await context.sendActivity(`Alert sent successfully`);
+                        await context.sendActivity(`message: ${context.activity.value.message} \n\n\n summary: ${context.activity.value.summary} \n\n\n from: ${context.activity.from.name} \n\n\n`);
+                    } else {
+                        await context.sendActivity(`Error in sending alerts: ${response.status}`);
                     }
+
                     await context.sendActivity({ attachments: [inputCard] });
                 } catch (e) {
+                    if (!TypeError) {
+                        await context.sendActivity(`Error in sending alert: ${e}`);
+                    }
                     await context.sendActivity({ attachments: [inputCard] });
                 }
                 await next();
@@ -54,13 +58,12 @@ class EmptyBot extends ActivityHandler {
                     var token = context.activity.value.apiKey;
                 } catch (e) {
                     if (context.activity.text === 'hard reset') {
-                        await myStorage.delete(['apiKey']);
-                        await context.sendActivity('API Key deleted');
+                        const existing = await myStorage.read(['apiKey']);
+                        if (existing && existing.apiKey) {
+                            await myStorage.delete(['apiKey']);
+                            await context.sendActivity(`API Key deleted by - ${context.activity.from.name}`);
+                        }
                     }
-                    // await myStorage.write({});
-                    // await context.sendActivity('Please provide a api key');
-                    // const ApiCard = CardFactory.adaptiveCard(apicard);
-                    // await context.sendActivity({ attachments: [ApiCard] });
                 }
                 // console.log(token, 'this token');
                 if (token) {
@@ -69,6 +72,7 @@ class EmptyBot extends ActivityHandler {
                     existing['apiKey'] = [token];
                     await myStorage.write(existing);
                     await context.sendActivity('Saving API Key');
+                    await context.sendActivity(`New API Key added by - ${context.activity.from.name}`); 
                     await context.sendActivity({ attachments: [inputCard] });
                 } else {
                     await context.sendActivity('Please provide a api key');

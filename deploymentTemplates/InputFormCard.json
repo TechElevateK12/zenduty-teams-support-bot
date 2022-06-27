@@ -5,12 +5,26 @@
     "body": [
       {
         "type": "TextBlock",
-        "text": "Please  your details"
+        "size": "medium",
+        "weight": "bolder",
+        "horizontalAlignment": "center",
+        "wrap": true,
+        "style": "heading"
       },
       {
         "type": "Input.Text",
         "id": "message",
-        "placeholder": "message"
+        "label": "Message",
+        "style": "text",
+        "isRequired": true,
+        "errorMessage": "Message is required"
+      },
+      {
+        "type": "Input.Text",
+        "id": "summary",
+        "label": "Summary",
+        "style": "text",
+        "value": " "
       }
    
     ],

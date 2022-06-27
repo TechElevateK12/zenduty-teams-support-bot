@@ -5,12 +5,21 @@
     "body": [
       {
         "type": "TextBlock",
-        "text": "Enter  your details"
+        "size": "medium",
+        "weight": "bolder",
+        "text": "Zenduty",
+        "horizontalAlignment": "center",
+        "wrap": true,
+        "style": "heading"
       },
       {
         "type": "Input.Text",
+        "label": "Zenduty Integration Key",
+        "style": "text",
         "id": "apiKey",
-        "placeholder": "zenduty apikey"
+        "isRequired": true,
+        "errorMessage": "integration key is required"
+        
       }
     ],
     "actions": [
