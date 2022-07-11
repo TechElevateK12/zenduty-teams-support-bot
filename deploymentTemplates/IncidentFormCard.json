@@ -1,0 +1,42 @@
+{
+  "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+  "type": "AdaptiveCard",
+  "version": "1.5",
+  "body": [
+      {
+          "type": "Input.Text",
+          "id": "message",
+          "label": "Message",
+          "isRequired": true,
+          "errorMessage": "Message is required"
+      },
+      {
+          "type": "Input.Text",
+          "id": "summary",
+          "label": "Summary",
+          "value": " "
+      },
+      {
+          "type": "Input.ChoiceSet",
+          "id": "integration",
+          "label": "Select Integration",
+          "value": "${Integrations[0].key}",
+          "choices": [
+              {
+                  "$data": "${Integrations}",
+                  "title": "${name}",
+                  "value": "${key}"
+              }
+          ]
+      }
+  ],
+  "actions": [
+      {
+          "type": "Action.Submit",
+          "title": "Submit",
+          "data": {
+              "incident": true
+          }
+      }
+  ]
+}

@@ -7,33 +7,36 @@
         "type": "TextBlock",
         "size": "medium",
         "weight": "bolder",
+        "text": "Zenduty",
         "horizontalAlignment": "center",
         "wrap": true,
         "style": "heading"
       },
       {
         "type": "Input.Text",
-        "id": "message",
-        "label": "Message",
+        "label": "Name",
         "style": "text",
+        "id": "name",
         "isRequired": true,
-        "errorMessage": "Message is required"
+        "errorMessage": "name is required"
+        
       },
       {
         "type": "Input.Text",
-        "id": "summary",
-        "label": "Summary",
+        "label": "Zenduty Integration Key",
         "style": "text",
-        "value": " "
+        "id": "apiKey",
+        "isRequired": true,
+        "errorMessage": "integration key is required"
+        
       }
-   
     ],
     "actions": [
       {
         "type": "Action.Submit",
         "title": "Submit",
         "data": {
-          "x": 13
+          "integration":true
         }
       }
     ]

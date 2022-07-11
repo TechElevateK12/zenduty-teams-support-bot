@@ -4,6 +4,7 @@
 const restify = require('restify');
 const { MemoryStorage } = require('botbuilder');
 const myStorage = new MemoryStorage();
+const { readFile, writeFile,checkFileExists } = require('./helpers');
 require('dotenv').config();
 
 // Import required bot services.
@@ -32,10 +33,29 @@ const credentialsFactory = new ConfigurationServiceClientCredentialFactory({
     MicrosoftAppTenantId: process.env.MicrosoftAppTenantId
 });
 
-if (process.env.ZendutyAppId) {
-    const existing = myStorage.read(['apiKey']);
-    existing['apiKey'] = [process.env.ZendutyAppId];
-    myStorage.write(existing);
+if (process.env.ZendutyIntegrationKey != null && process.env.ZendutyTeamName != null) {
+   
+    if  (!checkFileExists){
+        writeFile('IntegrationKey.json', JSON.stringify({"Integrations":[{'name':process.env.ZendutyTeamName,'key':process.env.ZendutyIntegrationKey}]}));
+    }else if (checkFileExists){
+        readFile('IntegrationKey.json').then(data => {
+            let json = JSON.parse(data);
+            let integrations = json.Integrations;
+            let integration = integrations.find(integration => integration.name === process.env.ZendutyTeamName);
+            if (integration == null) {
+                integrations.push({'name':process.env.ZendutyTeamName,'key':process.env.ZendutyIntegrationKey});
+                writeFile('IntegrationKey.json', JSON.stringify({"Integrations":integrations}));
+            }
+        }).catch(err => {
+            console.log(err);
+        }).finally(() => {
+            console.log('IntegrationKey.json updated');
+        }
+        );
+    }
+    
+}else { 
+    throw new Error('No Zenduty Integration Key');
 }
 
 const botFrameworkAuthentication = createBotFrameworkAuthenticationFromConfiguration(null, credentialsFactory);

@@ -60,7 +60,7 @@ This bot is used to send alerts to zenduty.
 
 
 * Go Your Zenduty Account,go to teams, then services,click on add integration,create a **API integration** copy the  integration key 
-* Pull zenduty-teams-support-bot and go to the .env file and add your **Microsoft App ID,Microsoft app password =Your Client Secret, MicrosoftAppType = MultiTenant, ZendutyAppId=your integration key**
+* Pull zenduty-teams-support-bot and go to the .env file and add your **Microsoft App ID,Microsoft app password =Your Client Secret, MicrosoftAppType = MultiTenant, ZendutyIntegrationKey=your integration key , ZendutyTeamName=your team name**
 * Deploy the Bot on any cloud service and copy the website url. 
 
      	**OR**
