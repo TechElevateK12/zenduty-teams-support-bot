@@ -33,29 +33,27 @@ const credentialsFactory = new ConfigurationServiceClientCredentialFactory({
     MicrosoftAppTenantId: process.env.MicrosoftAppTenantId
 });
 
-if (process.env.ZendutyIntegrationKey != null && process.env.ZendutyTeamName != null) {
+if (process.env.ZendutyIntegrationKey != null && process.env.ZendutyServiceName != null) {
    
     if  (!checkFileExists){
-        writeFile('IntegrationKey.json', JSON.stringify({"Integrations":[{'name':process.env.ZendutyTeamName,'key':process.env.ZendutyIntegrationKey}]}));
+        writeFile('IntegrationKey.json', JSON.stringify({"Integrations":[{'name':`${process.env.ZendutyServiceName}(default)`,'key':process.env.ZendutyIntegrationKey}]}));
     }else if (checkFileExists){
         readFile('IntegrationKey.json').then(data => {
             let json = JSON.parse(data);
             let integrations = json.Integrations;
-            let integration = integrations.find(integration => integration.name === process.env.ZendutyTeamName);
+            let integration = integrations.find(integration => integration.name === `${process.env.ZendutyServiceName}(default)`);
             if (integration == null) {
-                integrations.push({'name':process.env.ZendutyTeamName,'key':process.env.ZendutyIntegrationKey});
+                integrations.push({'name':`${process.env.ZendutyServiceName}(default)`,'key':process.env.ZendutyIntegrationKey});
                 writeFile('IntegrationKey.json', JSON.stringify({"Integrations":integrations}));
             }
         }).catch(err => {
             console.log(err);
-        }).finally(() => {
-            console.log('IntegrationKey.json updated');
-        }
-        );
+        });
     }
     
 }else { 
-    throw new Error('No Zenduty Integration Key');
+    throw new Error('No Zenduty Integration Key or Team Name provided');
+
 }
 
 const botFrameworkAuthentication = createBotFrameworkAuthenticationFromConfiguration(null, credentialsFactory);

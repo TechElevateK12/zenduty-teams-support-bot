@@ -6,7 +6,7 @@
       {
           "type": "Input.Text",
           "id": "message",
-          "label": "Message",
+          "label": "Title",
           "isRequired": true,
           "errorMessage": "Message is required"
       },
@@ -14,13 +14,16 @@
           "type": "Input.Text",
           "id": "summary",
           "label": "Summary",
-          "value": " "
+          "isRequired": true,
+            "errorMessage": "Summary is required"
       },
       {
           "type": "Input.ChoiceSet",
           "id": "integration",
           "label": "Select Integration",
           "value": "${Integrations[0].key}",
+          "isRequired": true,
+          "errorMessage": "Integration is required",
           "choices": [
               {
                   "$data": "${Integrations}",

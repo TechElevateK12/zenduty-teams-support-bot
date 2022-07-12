@@ -6,7 +6,9 @@
         {
             "type": "Input.ChoiceSet",
             "id": "integration",
-            "label": "Select Integration",
+            "label": "Select Service",
+            "isRequired": true,
+            "errorMessage": "Please select a service",
             "value": "${Integrations[0].key}",
             "choices": [
                 {

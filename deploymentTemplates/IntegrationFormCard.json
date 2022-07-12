@@ -14,12 +14,19 @@
       },
       {
         "type": "Input.Text",
-        "label": "Name",
+        "label": "Service Name",
         "style": "text",
         "id": "name",
         "isRequired": true,
-        "errorMessage": "name is required"
-        
+        "errorMessage": "service name is required"
+      },
+      {
+        "type": "Input.Text",
+        "label": "Integration Name",
+        "style": "text",
+        "id": "integrationName",
+        "isRequired": true,
+        "errorMessage": "integration name is required"
       },
       {
         "type": "Input.Text",
