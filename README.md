@@ -62,6 +62,16 @@ This bot is used to send alerts to zenduty.
 * Go Your Zenduty Account,go to teams, then services,click on add integration,create a **API integration** copy the  integration key 
 * Pull zenduty-teams-support-bot and go to the .env file and add your **Microsoft App ID,Microsoft app password =Your Client Secret, MicrosoftAppType = MultiTenant, ZendutyIntegrationKey=your integration key , ZendutyServiceName=your team name**
 * Deploy the Bot on any cloud service and copy the website url. 
+    **Deploy the bot to Azure**
+    * Go to your Azure account and seach for app services and click on app services then click on **create app service** 
+    * Give a name to your webapp,and select runtime as **node.js** and click on **review + create** and then click on **create**
+    * Go to App Service and click on the App Service You Created 
+    * Click on **Configuration** under settings,click on **New Application Setting** and configute the names present in .env file  and click on **save**
+    * Under Deployment click on **Deployment Center**  and connect to your git repository and click on **save**
+    * Go to your repository you will see a worflow being executed.(eg:for github Click on Actions in your repository) When it is done,you will see a deployment in the deployment center.
+        * if workflow has failed , remove lines  npm run build --if-present and npm run test --if-present in line number 27 and 28 respectively.and commit the changes.and new workflow will be executed.wait for the workflow to be completed.
+    * GO to overview and copy the website url.
+
 
      	**OR**
 
